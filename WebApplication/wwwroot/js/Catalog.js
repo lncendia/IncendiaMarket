@@ -1,6 +1,4 @@
-﻿let $data = new FormData();
-$data.append("sort", "date");
-$data.append("layout", "grid");
+﻿let $data = new FormData(document.querySelector("#dataForm"))
 let nextHandler = async function (pageIndex) {
     $data.set('page', pageIndex);
     let data = await fetch('./List', {method: 'POST', body: $data});
@@ -30,11 +28,12 @@ function ShowList(idContent, idImage) {
 document.querySelector("#dataForm").addEventListener("change", Select);
 
 async function Select() {
+    let d = new FormData(document.querySelector("#dataForm"))
+    d.forEach((key, value) => {
+        console.log(value + " : " + key);
+    })
     scroller.pause();
-    let $sort = $data.get("sort"), $layout = $data.get("layout");
     $data = new FormData(document.querySelector("#dataForm"));
-    $data.append("sort", $sort);
-    $data.append("layout", $layout);
     let response = await fetch('./List', {method: 'POST', body: $data});
     document.querySelector("div.cars").innerHTML = await response.text();
     if (response.status === 200) {
@@ -44,49 +43,26 @@ async function Select() {
 }
 
 let sort = document.querySelectorAll('.sort');
-let layout = document.querySelectorAll('.layout');
 [].forEach.call(sort, function (el) {
     el.onclick = function () {
         sort.forEach(element => {
             element.classList.remove("selected");
         })
-        $data.set("sort", this.getAttribute("value"));
         this.classList.add("selected");
-        Select().then(() => {
-            return false
-        });
     }
 });
+let layout = document.querySelectorAll('.layout');
 [].forEach.call(layout, function (el) {
     el.onclick = function () {
         layout.forEach(element => {
             element.classList.remove("selected");
         })
         let value = this.getAttribute("value");
-        $data.set("layout", value);
         this.classList.add("selected");
-        Select().then(() => {
-            if (value === "list") document.querySelector(".cars").classList.add("mt-1");
-            else document.querySelector(".cars").classList.remove("mt-1");
-            return false
-        });
     }
 });
 
 function clearFilter() {
-    sort.forEach(element => {
-        element.classList.remove("selected")
-    })
-    $data.set("sort", "date")
-    $data.set("layout", "grid")
-    layout.forEach(element => {
-        element.classList.remove("selected");
-    })
-    sort.forEach(element => {
-        element.classList.remove("selected");
-    })
-    sort[0].classList.add("selected")
-    layout[0].classList.add("selected")
     let form = document.querySelector("#dataForm")
     form.reset()
     form.dispatchEvent(new Event("change"))
