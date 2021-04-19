@@ -1,0 +1,28 @@
+﻿@model RegisterViewModel
+<h3>Регистрация</h3>
+<form asp-action="Register" method="post" class="form-horizontal">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="form-group">
+        <div class="mb-3">
+            <label asp-for="Username"></label>
+            <input asp-for="Username" class="form-control"/>
+            <span asp-validation-for="Username" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Email"></label>
+            <input asp-for="Email" class="form-control"/>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Password"></label>
+            <input asp-for="Password" class="form-control"/>
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="PasswordConfirm"></label>
+            <input asp-for="PasswordConfirm" class="form-control"/>
+            <span asp-validation-for="PasswordConfirm" class="text-danger"></span>
+        </div>
+        <input class=" btn shadow-none btn-success" type="submit" value="Регистрация">
+    </div>
+</form>

@@ -1,0 +1,7 @@
+﻿@model AdvertisementInfoViewModel
+@{
+    foreach (var comment in Model.Comments)
+    {
+        @await Html.PartialAsync("Comments", new CommentViewModel() {Comment = comment, User = Model.User})
+    }
+}

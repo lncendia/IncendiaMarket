@@ -1,0 +1,100 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> _manager;
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Incendia Market</title>
+    <link rel="shortcut icon" href="~/img/icon.png" type="image/png"/>
+    <link rel="stylesheet" href="~/css/main.css"/>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/webcreate/infinite-ajax-scroll/dist/infinite-ajax-scroll.js"></script>
+</head>
+<body class="d-flex flex-column h-100">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Incendia Market</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" asp-controller="Catalog" asp-action="List">Каталог</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="AboutUs">О нас</a>
+                    </li>
+                </ul>
+                <div class="row gy-1">
+                    <div class="col-lg-4 col-sm-4 btn-group">
+                        <button type="button" class=" btn shadow-none dropdown-toggle text-white" data-bs-toggle="dropdown" aria-expanded="false">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <span>@User.Identity.Name</span>
+                            }
+                            else
+                            {
+                                <span>Мой аккаунт</span>
+                            }
+                        </button>
+                        <ul class="dropdown-menu">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                if (!await _manager.IsEmailConfirmedAsync(await _manager.GetUserAsync(User)))
+                                {
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Account" asp-action="ConfirmEmail">Подтвердить почту</a>
+                                    </li>
+                                }
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="ChangeEmail">Настройки</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="ChangeEmail">Подать объявление</a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Выход</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Context.Request.Path">Вход</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="Register">Регистрация</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="col-lg-8">
+                        <form class="d-flex">
+                            <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search">
+                            <button class=" btn shadow-none btn-outline-success" type="submit">Поиск</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="container mt-5 mb-5">
+    @RenderBody()
+</div>
+<footer class="bg-dark text-center text-white footer mt-auto">
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+        © 2021 Copyright:
+        <a class="text-white" href="https://mdbootstrap.com/">incendia.ru</a>
+    </div>
+</footer>
+<script src="~/js/popper.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+</body>
+</html>

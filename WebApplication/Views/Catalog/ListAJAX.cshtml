@@ -1,0 +1,13 @@
+﻿@model AdvertisementListViewModel
+@{
+    if (Model.Layout == "grid")
+    {
+        foreach (Advertisement car in Model.Advertisements)
+            @await Html.PartialAsync("AllCarsGrid", car)
+    }
+    else
+    {
+        foreach (Advertisement car in Model.Advertisements)
+            @await Html.PartialAsync("AllCarsList", car)
+    }
+}

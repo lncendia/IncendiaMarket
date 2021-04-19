@@ -1,0 +1,73 @@
+﻿@model AdvertisementInfoViewModel
+@{
+    <div class="row gx-2 gy-2">
+        <div class="col-sm-6">
+            <img src="@Model.Advertisement.Image" class="d-block w-100" alt="">
+        </div>
+        <div class="col-sm-4">
+            <div id="yandexmap" style="width: 300px; height: 300px"></div>
+        </div>
+        <div class="col-sm-12">
+            <h2>Модель: @Model.Advertisement.Name</h2>
+            <p>Категория: @Model.Advertisement.Category.CategoryName</p>
+            <p>Описание: @Model.Advertisement.Description</p>
+            <p>Цена: @Model.Advertisement.Price.ToString("C0")</p>
+        </div>
+        <div class="col-md-3">
+            <h3>Комментарии:</h3>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <button class="btn shadow-none btn-outline-primary" onclick="commentForm(0, document.querySelector('.commentContainer'))">Добавить комментарий</button>
+        </div>
+        <div class="col-lg-7 col-12 gy-3">
+            <div class="commentContainer">
+                <form onsubmit="addComment(this); return false;" class="commentForm d-none was-validated pt-2" novalidate>
+                    <div class="row gy-3">
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <textarea name="comment" class="form-control" placeholder="Напишите комментарий" id="comment" style="height: 100px" required></textarea>
+                                <label for="comment">Комментарий</label>
+                                <div class="invalid-feedback">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <input class="btn shadow-none btn-outline-success" type="submit" value="Отправить">
+                            <input type="hidden" name="parentId" id="parentId" value="">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="row gy-4 comments">
+                @{
+                    foreach (var comment in Model.Comments)
+                    {
+                        @await Html.PartialAsync("Comments", new CommentViewModel(){Comment = comment, User = Model.User})
+                    }
+                }
+            </div>
+            <div class="spinner text-center d-none">
+                <img src="~/img/spinner.gif" alt="spinner">
+            </div>
+        </div>
+        <script src="~/js/Comments.js"></script>
+        <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU"
+                type="text/javascript"></script>
+        <script>
+        let map;
+        function initMap ()
+          {
+          map = new ymaps.Map("yandexmap", {
+            center: [48.532174, 38.614873],
+            zoom: 12
+            });
+          let marker = new ymaps.Placemark([48.532174, 38.614873], {
+                hintContent: 'Расположение',
+                balloonContent: 'Самый крутой разработчик в мире.'
+                });
+              map.geoObjects.add(marker);
+          }
+        ymaps.ready(initMap);
+        </script>
+    </div>
+}

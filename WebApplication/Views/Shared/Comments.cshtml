@@ -1,0 +1,39 @@
+﻿@model CommentViewModel
+@{
+    <div class="col-12 comment" id="@($"com{Model.Comment.Id}")">
+        <div class="row
+         @{ if (Model.Comment.ParentComment != null) @("gy-1") }">
+            <div class="col-9 col-lg-6">
+                <span style="font-family: Calibri,serif; font-size: medium; color: #2c75bb;">@Model.Comment.User.UserName</span>
+                @{
+                    if (Model.User != null && Model.User == Model.Comment.User)
+                    {
+                        <svg onclick="deleteComment(@Model.Comment.Id , this.parentNode.parentNode.parentNode)" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x delete" viewBox="0 0 16 16">
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+                    }
+                }
+            </div>
+            <div class="col-3 col-lg-6 text-end text-truncate">
+                <span>@Model.Comment.Date.ToString("M")</span>
+            </div>
+            <div class="col-12 text-truncate">
+                @if (Model.Comment.ParentComment != null)
+                {
+                    <span class="ps-3">
+                        В ответ на:
+                        <a href="javascript: scrollToId('@Model.Comment.ParentComment.Id')" class="text-black-50">
+                            @(Model.Comment.ParentComment.Text)
+                        </a>
+                    </span>
+                }
+            </div>
+            <div class="col-9 col-lg-6 text-start">
+                <span>@Model.Comment.Text</span>
+            </div>
+            <div class="col-3 col-lg-6 text-end">
+                <a href="#" class="text-black-50" onclick="commentForm(@(Model.Comment.Id), this.parentNode.parentNode); return false;">Ответить</a>
+            </div>
+        </div>
+    </div>
+}
