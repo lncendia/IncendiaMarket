@@ -5,31 +5,37 @@ body {
     margin: 0;
     padding: 0;
 }
-.sort, .layout, .reset{
+
+.sort, .layout, .reset {
     text-decoration: none;
     color: #6c757d;
 }
-.sort:active, .layout:active, .reset:active{
-    color: #0d6efd;
-}
-.sort.selected, .layout.selected{
+
+.sort.selected, .layout.selected {
     color: #1a1e21;
 }
-.sort:hover{
+
+.sort:hover, .layout:hover, .reset:hover {
     cursor: pointer;
-    color: #0d6efd;
 }
-.filter{
+.sort:active, .layout:active, .reset:active {
+    color: #429df6;
+}
+
+.filter {
     text-decoration: none;
     color: black;
 }
+
 #map {
     height: 100%;
 }
-.delete{
+
+.delete {
     color: #6c757d;
 }
-.delete:hover{
+
+.delete:hover {
     cursor: pointer;
     color: #0d6efd;
 }

@@ -28,15 +28,15 @@ function ShowList(idContent, idImage) {
 document.querySelector("#dataForm").addEventListener("change", Select);
 
 async function Select() {
+    scroller.pause();
     let d = new FormData(document.querySelector("#dataForm"))
     d.forEach((key, value) => {
         console.log(value + " : " + key);
     })
-    scroller.pause();
     $data = new FormData(document.querySelector("#dataForm"));
     let response = await fetch('./List', {method: 'POST', body: $data});
-    document.querySelector("div.cars").innerHTML = await response.text();
     if (response.status === 200) {
+        document.querySelector("div.cars").innerHTML = await response.text();
         scroller.pageIndex = 0;
         scroller.resume();
     }
@@ -63,6 +63,14 @@ let layout = document.querySelectorAll('.layout');
 });
 
 function clearFilter() {
+    layout.forEach(element => {
+        element.classList.remove("selected");
+    })
+    sort.forEach(element => {
+        element.classList.remove("selected");
+    })
+    sort[0].classList.add("selected")
+    layout[0].classList.add("selected")
     let form = document.querySelector("#dataForm")
     form.reset()
     form.dispatchEvent(new Event("change"))
